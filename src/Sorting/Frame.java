@@ -27,7 +27,7 @@ public class Frame extends JFrame {
     private final int DEFAULT_SPEED = 10;
     private final int DEFAULT_SIZE = 100;
 
-    private final String[] Sorts = {"Bubble",  "Bubble(fast)"};
+    private final String[] Sorts = {"Bubble",  "Bubble(fast)", "Selection", "Selection(fast)"};
 
     private int sizeMod;
 

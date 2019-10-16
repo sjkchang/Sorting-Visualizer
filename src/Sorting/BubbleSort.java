@@ -16,7 +16,7 @@ public class BubbleSort implements Runnable{
         if (fast) {
             sortFast();
         } else {
-            sortSlow();
+            sort();
         }
         SortingVisualizer.isSorting=false;
     }
@@ -44,7 +44,7 @@ public class BubbleSort implements Runnable{
         }
     }
 
-    public void sortSlow() {
+    public void sort() {
         int temp = 0;
         boolean swapped = false;
         for(int i = 0; i<toBeSorted.length-1; i++){

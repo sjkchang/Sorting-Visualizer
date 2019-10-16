@@ -46,6 +46,14 @@ public class SortingVisualizer {
                     sortingThread = new Thread(new BubbleSort(toBeSorted, frame, true));
                     break;
 
+                case "Selection":
+                    sortingThread = new Thread(new SelectionSort(toBeSorted, frame, false));
+                    break;
+
+                case "Selection(fast)":
+                    sortingThread = new Thread((new SelectionSort(toBeSorted, frame, true)));
+                    break;
+
                 default:
                     isSorting = false;
                     return;
