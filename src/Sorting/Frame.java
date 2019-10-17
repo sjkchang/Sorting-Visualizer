@@ -110,7 +110,7 @@ public class Frame extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 // 90% of the windows height divided by the size of the array
-                sizeMod = (int) ((getHeight()*0.9)/(squarePanels.length));
+                sizeMod = (int) ((getHeight()*0.8)/(squarePanels.length));
             }
 
             //Not needed
