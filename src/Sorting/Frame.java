@@ -8,8 +8,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
-import java.awt.event.ComponentEvent;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,14 +23,14 @@ public class Frame extends JFrame {
     private final int MAX_SIZE = 500;
     private final int MIN_SIZE = 1;
     private final int DEFAULT_SPEED = 10;
-    private final int DEFAULT_SIZE = 100;
+    private final int DEFAULT_SIZE = 50;
 
-    private final String[] Sorts = {"Bubble",  "Bubble(fast)", "Selection", "Selection(fast)"};
+    private final String[] Sorts = {"Bubble",  "Bubble(fast)", "Selection", "Selection(fast)", "Insertion", "Insertion(fast)"};
 
     private int sizeMod;
 
     private JPanel wrapper, arrayWrapper, buttonWrapper;
-    private JPanel[] squarePanels;
+    private JPanel[] arrayRects;
     private JButton startButton;
     private JComboBox<String> sortSelection;
     private JSlider speedSlider, sizeSlider;
@@ -50,7 +48,7 @@ public class Frame extends JFrame {
         speedSlider = new JSlider(MIN_SPEED, MAX_SPEED, DEFAULT_SPEED);
         sizeSlider = new JSlider(MIN_SIZE, MAX_SIZE, DEFAULT_SIZE);
         speedValue = new JLabel("Speed: 10 ms");
-        sizeValue = new JLabel("Size: 100 values");
+        sizeValue = new JLabel("Size: 50 values");
         constraints = new GridBagConstraints();
 
         for(String s : Sorts) sortSelection.addItem(s);
@@ -67,10 +65,10 @@ public class Frame extends JFrame {
             }
         });
 
+        //Creates Speed Slider
         speedSlider.setMinorTickSpacing(5);
         speedSlider.setMajorTickSpacing(50);
         speedSlider.setPaintTicks(true);
-
         speedSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent arg0) {
                 speedValue.setText(("Speed: " + Integer.toString(speedSlider.getValue()) + "ms"));
@@ -79,10 +77,10 @@ public class Frame extends JFrame {
             }
         });
 
+        //Creates Size Slider
         sizeSlider.setMinorTickSpacing(10);
         sizeSlider.setMajorTickSpacing(100);
         sizeSlider.setPaintTicks(true);
-
         sizeSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent arg0) {
                 sizeValue.setText(("Size: " + Integer.toString(sizeSlider.getValue()) + " values"));
@@ -98,30 +96,13 @@ public class Frame extends JFrame {
         buttonWrapper.add(startButton);
         buttonWrapper.add(sortSelection);
 
-        wrapper.add(buttonWrapper, BorderLayout.SOUTH);
+        wrapper.add(buttonWrapper, BorderLayout.NORTH);
         wrapper.add(arrayWrapper);
 
         add(wrapper);
 
         setExtendedState(JFrame.MAXIMIZED_BOTH );
 
-        addComponentListener(new ComponentListener() {
-            // Resets the sizeModifier
-            @Override
-            public void componentResized(ComponentEvent e) {
-                // 90% of the windows height divided by the size of the array
-                sizeMod = (int) ((getHeight()*0.8)/(squarePanels.length));
-            }
-
-            //Not needed
-            @Override
-            public void componentMoved(ComponentEvent e) {}
-            @Override
-            public void componentShown(ComponentEvent e) {}
-            @Override
-            public void componentHidden(ComponentEvent e) {}
-
-        });
 
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,19 +111,20 @@ public class Frame extends JFrame {
 
     // preDrawArray reinitializes the array of panels that represent the values. They are set based on the size of the window.
     public void preDrawArray(Integer[] squares){
-        squarePanels = new JPanel[SortingVisualizer.toBeSortedSize];
+        arrayRects = new JPanel[SortingVisualizer.toBeSortedSize];
         arrayWrapper.removeAll();
         // 90% of the windows height, divided by the size of the sorted array.
-        sizeMod =  (int) ((getHeight()*0.9)/(squarePanels.length));
+        sizeMod =  (int) ((getHeight()*0.9)/(arrayRects.length));
         for(int i = 0; i<SortingVisualizer.toBeSortedSize; i++){
-            squarePanels[i] = new JPanel();
-            squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockWidth, squares[i]* sizeMod));
-            squarePanels[i].setBackground(Color.black);
-            arrayWrapper.add(squarePanels[i], constraints);
+            arrayRects[i] = new JPanel();
+            arrayRects[i].setPreferredSize(new Dimension(SortingVisualizer.blockWidth, squares[i]* sizeMod));
+            arrayRects[i].setBackground(Color.black);
+            arrayWrapper.add(arrayRects[i], constraints);
         }
         repaint();
         validate();
     }
+
 
     public void reDrawArray(Integer[] a){
         reDrawArray(a, -1);
@@ -159,19 +141,19 @@ public class Frame extends JFrame {
     // reDrawArray does similar to preDrawArray except it does not reinitialize the panel array.
     public void reDrawArray(Integer[] squares, int working, int comparing, int reading){
         arrayWrapper.removeAll();
-        for(int i = 0; i<squarePanels.length; i++){
-            squarePanels[i] = new JPanel();
-            squarePanels[i].setPreferredSize(new Dimension(SortingVisualizer.blockWidth, squares[i]* sizeMod));
+        for(int i = 0; i< arrayRects.length; i++){
+            arrayRects[i] = new JPanel();
+            arrayRects[i].setPreferredSize(new Dimension(SortingVisualizer.blockWidth, squares[i]* sizeMod));
             if (i == working){
-                squarePanels[i].setBackground(Color.blue);
+                arrayRects[i].setBackground(Color.blue);
             }else if(i == comparing){
-                squarePanels[i].setBackground(Color.green);
+                arrayRects[i].setBackground(Color.green);
             }else if(i == reading){
-                squarePanels[i].setBackground(Color.yellow);
+                arrayRects[i].setBackground(Color.yellow);
             }else{
-                squarePanels[i].setBackground(Color.black);
+                arrayRects[i].setBackground(Color.black);
             }
-            arrayWrapper.add(squarePanels[i], constraints);
+            arrayWrapper.add(arrayRects[i], constraints);
         }
         repaint();
         validate();

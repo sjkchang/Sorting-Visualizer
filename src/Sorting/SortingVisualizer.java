@@ -7,11 +7,10 @@ public class SortingVisualizer {
     public static Frame frame;
     public static Integer[] toBeSorted;
     public static boolean isSorting = false;
-    public static int toBeSortedSize = 100;
+    public static int toBeSortedSize = 50;
     public static int sleep = 10;
     public static int blockWidth;
-    // Stepped depicts whether the values are incremental or random. True is incremental.
-    public static boolean stepped = false;
+
 
     public static void main(String[] args) {
         frame = new Frame();
@@ -19,19 +18,17 @@ public class SortingVisualizer {
         frame.setLocationRelativeTo(null);
     }
 
+    //Resets toBeSorted, creating a new random array
     public static void resetArray(){
-        // If we are currently running a sorting method, then isSorting should be true
-        // and the array should not be reset while it is being sorted
-        if (isSorting) { return; }
         toBeSorted = new Integer[toBeSortedSize];
         blockWidth = (int) Math.max(Math.floor(500/ toBeSortedSize), 1);
         for(int i = 0; i<toBeSorted.length; i++){
             toBeSorted[i] = (int) (toBeSortedSize *Math.random());
         }
-        // If we're using incremental values, they are already sorted. This shuffles it.
         frame.preDrawArray(toBeSorted);
     }
 
+    //Starts Sorting Visualization, based on what sorting algorithm is currently selected
     public static void startSort(String type){
         if (sortingThread == null || !isSorting){
             resetArray();
@@ -54,13 +51,20 @@ public class SortingVisualizer {
                     sortingThread = new Thread((new SelectionSort(toBeSorted, frame, true)));
                     break;
 
+                case "Insertion":
+                    sortingThread = new Thread(new InsertionSort(toBeSorted, frame, false));
+                    break;
+
+                case "Insertion(fast)":
+                    sortingThread = new Thread((new InsertionSort(toBeSorted, frame, true)));
+                    break;
+
                 default:
                     isSorting = false;
                     return;
             }
 
             sortingThread.start();
-
         }
     }
 }

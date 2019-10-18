@@ -1,7 +1,6 @@
 package Sorting;
 
 public class SelectionSort implements Runnable {
-
     private Integer[] toBeSorted;
     private Frame frame;
     private boolean fast;
@@ -18,7 +17,7 @@ public class SelectionSort implements Runnable {
         } else {
             sort();
         }
-        SortingVisualizer.isSorting = false;
+        SortingVisualizer.isSorting=false;
     }
 
     public void sortFast() {

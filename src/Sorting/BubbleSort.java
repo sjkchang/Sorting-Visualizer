@@ -1,7 +1,6 @@
 package Sorting;
 
 public class BubbleSort implements Runnable{
-
     private Integer[] toBeSorted;
     private Frame frame;
     private boolean fast;
